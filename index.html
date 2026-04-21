@@ -287,13 +287,26 @@ body::before {
 .footnote { margin-top: 22px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.5; max-width: 60ch; }
 
 @media (max-width: 860px) {
+  .wrap { padding: 32px 24px 80px; }
   .ticket { grid-template-columns: 1fr; }
   .ticket .stub { border-left: 0; border-top: 2px dashed var(--ink); }
   .ticket .stub::before, .ticket .stub::after { display: none; }
+  .ticket .bottom-row { grid-template-columns: 1fr 1fr; gap: 14px; }
   .dir-head, .row { grid-template-columns: 30px 1fr 60px; }
   .dir-head .c-sub, .dir-head .c-chip, .row .sub, .row .chip { display: none; }
+  .row .name .t { font-size: 32px; }
   .stamp { width: 68px; height: 68px; font-size: 7px; }
   .stamp b { font-size: 11px; }
+  .ribbon { grid-template-columns: 1fr; gap: 8px; font-size: 9px; }
+  .ribbon .r { text-align: left; }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 20px 16px 60px; }
+  .ticket h1 { font-size: clamp(44px, 14vw, 80px); }
+  .ticket .bottom-row { grid-template-columns: 1fr 1fr; }
+  .row .name .t { font-size: 26px; }
+  .row { padding: 20px 12px; }
 }
 </style>
 </head>

@@ -171,6 +171,39 @@ body.light-os .menubar { background: rgba(0,0,0,0.25); }
   .w-work { width: 440px; }
 }
 
+/* Mobile: replace OS desktop with stacked scrollable layout */
+@media (max-width: 768px) {
+  html, body { overflow: auto; height: auto; }
+  .menubar { position: sticky; }
+  .desktop {
+    position: static;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 16px 16px 100px;
+  }
+  .window {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .window .wbody { overflow: visible; flex: none; }
+  .window .titlebar { cursor: default; }
+  .desk-icons { display: none; }
+  .dock { display: none; }
+  .w-hero { display: none !important; }
+  .work-tabs { overflow-x: auto; }
+  .contact-row { grid-template-columns: 1fr 1fr; }
+  .c-form .field { grid-template-columns: 1fr; }
+  .c-form .send-row { flex-direction: column; align-items: flex-start; }
+}
+
 /* ABOUT content */
 .about-hero {
   font-family: var(--disp);
