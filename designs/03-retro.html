@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KJ / Retro · Sunset Print</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bungee&family=Bungee+Shade&family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&display=swap" rel="stylesheet">
+<script src="../content.js"></script>
+<style>
+:root {
+  --cream:  #f3e3c3;
+  --paper:  #ead2a2;
+  --ink:    #2a150a;
+  --brown:  #6b3218;
+  --orange: #e0663a;
+  --hot:    #d23819;
+  --mus:    #c99a28;
+  --sage:   #6a7a3a;
+  --sky:    #97b8c4;
+  --muted:  #8a6a3c;
+  --disp:   'Alfa Slab One', Georgia, serif;
+  --slab:   'Fraunces', Georgia, serif;
+  --body:   'Familjen Grotesk', sans-serif;
+  --mono:   'IBM Plex Mono', monospace;
+  --grain:  0.55;
+}
+body.cool { --cream:#ead8c4; --paper:#dcc3a0; --orange:#c15a55; --hot:#8c3a47; --mus:#b88830; --sage:#3a6558; --sky:#4a7180; --ink:#201410; --brown:#3a2316; --muted:#6a5a3a; }
+body.wine { --cream:#efd9c0; --paper:#e0b98c; --orange:#b84028; --hot:#5e1420; --mus:#c48a28; --sage:#6a6a28; --sky:#6a4a55; --ink:#2a0e10; --brown:#5a1818; --muted:#7a4a28; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+
+/* Sun/stripe background layer */
+body {
+  background:
+    radial-gradient(ellipse 900px 500px at 80% -10%, rgba(224,102,58,0.28), transparent 65%),
+    radial-gradient(ellipse 700px 400px at 10% 110%, rgba(201,154,40,0.22), transparent 65%),
+    var(--cream);
+}
+
+/* Paper grain + halftone overlay */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: var(--grain);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 200;
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  background-image: radial-gradient(rgba(42,21,10,0.09) 1px, transparent 1.4px);
+  background-size: 4px 4px;
+  opacity: calc(var(--grain) * 0.35);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 199;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 40px 80px; position: relative; }
+
+/* Top strip */
+.strip {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: 32px;
+}
+.strip .c { text-align: center; }
+.strip .r { text-align: right; }
+.strip a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; margin-left: 14px; }
+.strip a:hover { color: var(--hot); }
+
+/* Hero — retro travel poster */
+.hero {
+  position: relative;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  padding: 46px 48px 36px;
+  box-shadow: 6px 6px 0 var(--brown);
+  overflow: hidden;
+}
+.hero .sunrays {
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 520px; height: 520px;
+  background:
+    conic-gradient(from 210deg,
+      var(--orange) 0 10deg, transparent 10deg 20deg,
+      var(--orange) 20deg 30deg, transparent 30deg 40deg,
+      var(--orange) 40deg 50deg, transparent 50deg 60deg,
+      var(--orange) 60deg 70deg, transparent 70deg 80deg,
+      var(--orange) 80deg 90deg, transparent 90deg 100deg,
+      var(--orange) 100deg 110deg, transparent 110deg 120deg);
+  opacity: 0.35;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero .sundisc {
+  position: absolute;
+  top: 40px; right: 60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, var(--mus), var(--orange) 60%, var(--hot));
+  box-shadow: inset -10px -20px 30px rgba(42,21,10,0.25);
+  pointer-events: none;
+}
+.hero .sunstripes {
+  position: absolute;
+  top: 170px; right: 0;
+  width: 380px; height: 180px;
+  background: repeating-linear-gradient(180deg,
+    var(--hot)    0 14px,
+    transparent  14px 20px,
+    var(--orange) 20px 32px,
+    transparent  32px 40px,
+    var(--mus)    40px 52px,
+    transparent  52px 62px,
+    var(--cream)  62px 72px);
+  mask: linear-gradient(90deg, transparent 0%, black 30%, black 100%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.hero .badge {
+  position: absolute;
+  top: 36px; left: 44px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brown);
+  z-index: 2;
+}
+.hero .badge b {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--ink);
+  color: var(--cream);
+  margin-right: 8px;
+  letter-spacing: 0.16em;
+}
+.hero h1 {
+  position: relative;
+  z-index: 2;
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: clamp(68px, 10vw, 148px);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 50px 0 8px;
+  text-shadow: 3px 3px 0 var(--orange);
+}
+.hero h1 .accent { color: var(--hot); }
+.hero .sub {
+  position: relative;
+  z-index: 2;
+  font-family: var(--slab);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--brown);
+  max-width: 22ch;
+  margin: 18px 0 0;
+}
+.hero .bottom-hero {
+  position: relative;
+  z-index: 2;
+  margin-top: 46px;
+  padding-top: 18px;
+  border-top: 2px solid var(--ink);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brown);
+}
+.hero .bottom-hero b { display: block; font-family: var(--disp); font-weight: 400; font-size: 22px; color: var(--ink); letter-spacing: -0.01em; text-transform: none; margin-top: 4px; }
+
+/* section heading */
+.sh {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: end;
+  padding: 80px 0 14px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 28px;
+}
+.sh .sn { font-family: var(--mono); font-size: 12px; letter-spacing: 0.25em; color: var(--brown); text-transform: uppercase; padding-bottom: 10px; }
+.sh h2 {
+  margin: 0;
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.sh .pg { font-family: var(--slab); font-style: italic; font-size: 22px; color: var(--brown); padding-bottom: 10px; }
+
+/* about */
+.about {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 44px;
+  padding-bottom: 20px;
+}
+.about .prose { font-family: var(--slab); font-size: 20px; line-height: 1.55; color: #2a1a0e; }
+.about .prose p { margin: 0 0 16px; }
+.about .prose p:first-child::first-letter {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 86px;
+  float: left;
+  line-height: 0.8;
+  margin: 10px 10px 0 -4px;
+  color: var(--hot);
+  text-shadow: 3px 3px 0 var(--mus);
+}
+.pullquote {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.1;
+  color: var(--ink);
+  padding: 24px 0;
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+}
+.pullquote::before, .pullquote::after { content: "\201C"; color: var(--hot); }
+.pullquote::after { content: "\201D"; }
+
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 40px 0 20px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+}
+.stats-strip .cell { padding: 18px 16px; border-right: 2px solid var(--ink); text-align: left; }
+.stats-strip .cell:last-child { border-right: 0; }
+.stats-strip .n { font-family: var(--disp); font-weight: 400; font-size: 40px; line-height: 1; color: var(--hot); letter-spacing: -0.01em; text-shadow: 2px 2px 0 var(--mus); }
+.stats-strip .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brown); margin-top: 10px; }
+
+/* Work — journal entries */
+.job {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 32px;
+  padding: 36px 0;
+  border-top: 2px solid var(--ink);
+  position: relative;
+}
+.job:first-of-type { border-top: 0; padding-top: 12px; }
+.job .meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brown); }
+.job .meta .when { display: block; font-family: var(--slab); font-style: italic; font-weight: 400; font-size: 22px; color: var(--ink); text-transform: none; letter-spacing: 0; margin-top: 10px; }
+.job .meta .where { display: block; margin-top: 8px; font-family: var(--mono); font-size: 10px; color: var(--brown); }
+.job .co {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 4px;
+  text-shadow: 2px 2px 0 var(--orange);
+}
+.job .rl { font-family: var(--slab); font-style: italic; font-size: 20px; color: var(--brown); margin-bottom: 18px; }
+.job ul { list-style: none; padding: 0; margin: 0; font-family: var(--slab); font-size: 17px; line-height: 1.55; color: #2a1a0e; }
+.job ul li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px dashed rgba(42,21,10,0.25); }
+.job ul li:last-child { border-bottom: 0; }
+.job ul li::before {
+  content: "✦";
+  position: absolute; left: 0; top: 10px;
+  color: var(--hot);
+  font-size: 14px;
+}
+
+/* Projects */
+.proj-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 20px; padding-bottom: 40px; }
+.proj {
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  padding: 20px 22px;
+  box-shadow: 5px 5px 0 var(--brown);
+  position: relative;
+  min-height: 300px;
+  display: flex; flex-direction: column;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.proj:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--hot); }
+.proj.lead { background: var(--ink); color: var(--cream); box-shadow: 5px 5px 0 var(--hot); }
+.proj.lead .ptop { color: var(--mus); border-color: var(--mus); }
+.proj.lead h3 { color: var(--cream); text-shadow: 3px 3px 0 var(--orange); }
+.proj.lead .pt { color: var(--mus); }
+.proj.lead .pd { color: #e7d5bc; }
+.proj.lead .pt-tags span { border-color: var(--mus); color: var(--mus); }
+.proj .ptop {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brown);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--brown);
+}
+.proj h3 {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 14px 0 10px;
+  color: var(--ink);
+}
+.proj.lead h3 { font-size: 56px; }
+.proj .pt { font-family: var(--slab); font-style: italic; font-size: 17px; color: var(--brown); margin-bottom: 12px; }
+.proj .pd { font-family: var(--slab); font-size: 15px; line-height: 1.55; color: #2a1a0e; margin: 0 0 auto; }
+.proj .pt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+.proj .pt-tags span {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border: 1px solid var(--brown);
+  color: var(--brown);
+}
+.proj.empty { background: transparent; box-shadow: none; border-style: dashed; }
+.proj.empty h3 { color: var(--brown); }
+
+/* Skills */
+.sk-list { padding-bottom: 40px; }
+.sk-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 28px;
+  padding: 16px 0;
+  border-bottom: 1px dashed rgba(42,21,10,0.3);
+  align-items: baseline;
+}
+.sk-row h4 { margin: 0; font-family: var(--disp); font-weight: 400; font-size: 26px; color: var(--ink); letter-spacing: -0.01em; }
+.sk-row h4 small { display: block; font-family: var(--mono); font-size: 10px; color: var(--brown); letter-spacing: 0.2em; text-transform: uppercase; font-weight: normal; margin-top: 4px; }
+.sk-row .items { font-family: var(--slab); font-size: 18px; line-height: 1.45; color: #2a1a0e; }
+.sk-row .items span + span::before { content: " · "; color: var(--hot); font-weight: 700; }
+
+/* Edu */
+.edu-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: end;
+  padding: 36px 32px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--brown);
+}
+.edu-row h3 { margin: 0; font-family: var(--disp); font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: -0.015em; color: var(--ink); text-shadow: 2px 2px 0 var(--orange); }
+.edu-row .rl { font-family: var(--slab); font-style: italic; font-size: 18px; color: var(--brown); margin-top: 10px; }
+.edu-row .gpa { font-family: var(--disp); font-weight: 400; font-size: 90px; line-height: 0.9; color: var(--hot); text-shadow: 3px 3px 0 var(--mus); letter-spacing: -0.03em; }
+.edu-row .gpa small { display: block; font-family: var(--mono); font-size: 10px; color: var(--brown); letter-spacing: 0.2em; text-transform: uppercase; text-align: right; margin-top: 6px; }
+
+/* Contact */
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 40px;
+  align-items: center;
+}
+.contact h2 {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: clamp(80px, 10vw, 140px);
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink);
+  text-shadow: 4px 4px 0 var(--hot);
+}
+.contact h2 em { color: var(--hot); font-style: italic; text-shadow: 4px 4px 0 var(--mus); }
+.contact .c-list { display: flex; flex-direction: column; gap: 4px; }
+.contact .c-list a {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 14px;
+  padding: 14px 14px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--slab);
+  font-size: 18px;
+  align-items: center;
+  transition: transform .15s, box-shadow .15s;
+}
+.contact .c-list a:hover { transform: translate(-3px,-3px); box-shadow: 5px 5px 0 var(--hot); }
+.contact .c-list a .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--brown); }
+.contact .c-list a .arr { font-family: var(--disp); font-size: 18px; color: var(--hot); }
+
+/* contact form */
+.c-form {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 2px solid var(--ink);
+}
+.c-form .form-head {
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--ink);
+  text-shadow: 2px 2px 0 var(--orange);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.c-form .field {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.c-form .field label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brown);
+  padding-top: 10px;
+}
+.c-form input,
+.c-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--slab);
+  font-size: 17px;
+  outline: none;
+  resize: vertical;
+  transition: border-color .15s, box-shadow .15s;
+}
+.c-form input:focus,
+.c-form textarea:focus { border-color: var(--hot); box-shadow: 3px 3px 0 var(--mus); }
+.c-form textarea { min-height: 96px; }
+.c-form .send-row { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
+.c-form button {
+  padding: 10px 24px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--disp);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, background .15s;
+}
+.c-form button:hover { background: var(--hot); border-color: var(--hot); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--mus); }
+.c-form button:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+.c-form .status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brown); }
+.c-form .status.ok { color: #3a6030; }
+.c-form .status.err { color: var(--hot); }
+
+/* Footer */
+.ftr {
+  margin-top: 30px;
+  padding: 14px 0;
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brown);
+}
+.ftr .r { text-align: right; }
+.ftr .c { text-align: center; }
+
+/* Tweaks */
+.tweaks {
+  position: fixed; bottom: 16px; right: 16px;
+  width: 260px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  z-index: 300;
+  display: none;
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--brown);
+}
+.tweaks.on { display: block; }
+.tweaks h4 { margin: 0 0 10px; font-family: var(--disp); font-weight: 400; font-size: 20px; color: var(--hot); text-shadow: 2px 2px 0 var(--mus); letter-spacing: 0; }
+.tweaks .row { display: grid; grid-template-columns: 84px 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+.tweaks label { color: var(--brown); letter-spacing: 0.14em; text-transform: uppercase; font-size: 9px; }
+.tweaks select { width: 100%; padding: 4px; border: 1px solid var(--ink); background: var(--cream); color: var(--ink); font-family: inherit; font-size: 11px; }
+.tweaks input[type="range"] { width: 100%; }
+.tweaks .swatches { display: flex; gap: 4px; }
+.tweaks .sw { width: 22px; height: 22px; border: 1.5px solid var(--ink); cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="strip">
+  <div>EST. 2022 · SOFTWARE ENGINEER</div>
+  <div class="c">KSHITIJ &middot; JAIN &middot; PORTFOLIO · N° 03</div>
+  <div class="r">
+    <a href="#work">work</a>
+    <a href="#projects">proj</a>
+    <a href="#contact">contact</a>
+    <a href="../index.html">← idx</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="sunrays"></div>
+  <div class="sundisc"></div>
+  <div class="sunstripes"></div>
+  <div class="badge"><b>ISSUE 03</b> SUNSET PRESS · APR MMXXVI</div>
+  <h1>KSHITIJ<br><span class="accent">JAIN</span>.</h1>
+  <div class="sub">A software engineer with a 3.5-year warranty. &amp; a taste for warm palettes.</div>
+  <div class="bottom-hero">
+    <div>Based<b>Bangalore</b></div>
+    <div>Role<b>SWE II</b></div>
+    <div>Stack<b>Go / Java / TS</b></div>
+    <div>Status<b>Open to talk</b></div>
+  </div>
+</section>
+
+<div class="sh" id="about">
+  <div class="sn">§ 01</div>
+  <h2>On working &mdash;<br>warmly.</h2>
+  <div class="pg">Page 01</div>
+</div>
+
+<div class="about">
+  <div class="prose" id="about-prose"></div>
+  <div>
+    <div class="pullquote">Rollback plans, observability, and the kind of documentation people read on their second day.</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--brown);margin-top:10px;letter-spacing:0.14em;text-transform:uppercase;">— K.J., any given sprint</div>
+  </div>
+</div>
+
+<div class="stats-strip" id="stats"></div>
+
+<div class="sh" id="work">
+  <div class="sn">§ 02</div>
+  <h2>Employment<br>history.</h2>
+  <div class="pg">Page 02</div>
+</div>
+<div id="work-list"></div>
+
+<div class="sh" id="projects">
+  <div class="sn">§ 03</div>
+  <h2>Side works.</h2>
+  <div class="pg">Page 03</div>
+</div>
+<div class="proj-grid" id="proj-list"></div>
+
+<div class="sh" id="skills">
+  <div class="sn">§ 04</div>
+  <h2>The toolkit.</h2>
+  <div class="pg">Page 04</div>
+</div>
+<div class="sk-list" id="skills-list"></div>
+
+<div class="sh" id="education">
+  <div class="sn">§ 05</div>
+  <h2>Schooling.</h2>
+  <div class="pg">Page 05</div>
+</div>
+<div id="edu-list"></div>
+
+<div class="sh" id="contact">
+  <div class="sn">§ 06</div>
+  <h2>Write back.</h2>
+  <div class="pg">Page 06</div>
+</div>
+
+<section class="contact">
+  <h2>Say<br><em>hello.</em></h2>
+  <div class="c-list">
+    <a href="mailto:kshitijjainm@gmail.com"><span class="lbl">Email</span><span>kshitijjainm@gmail.com</span><span class="arr">→</span></a>
+    <a href="https://linkedin.com/in/kshitij-jain" target="_blank" rel="noopener"><span class="lbl">LinkedIn</span><span>/in/kshitij-jain</span><span class="arr">→</span></a>
+    <a href="https://leetcode.com/u/kshitijjainm" target="_blank" rel="noopener"><span class="lbl">LeetCode</span><span>/u/kshitijjainm</span><span class="arr">→</span></a>
+    <a href="../Kshitij_Jain_Resume.pdf" download><span class="lbl">Résumé</span><span>Download PDF</span><span class="arr">↓</span></a>
+  </div>
+</section>
+
+<form class="c-form" id="contact-form">
+  <div class="form-head">Send a dispatch.</div>
+  <div class="field">
+    <label for="cf-name">Name</label>
+    <input id="cf-name" name="name" type="text" placeholder="Your name" required />
+  </div>
+  <div class="field">
+    <label for="cf-email">Email</label>
+    <input id="cf-email" name="email" type="email" placeholder="you@example.com" required />
+  </div>
+  <div class="field">
+    <label for="cf-msg">Message</label>
+    <textarea id="cf-msg" name="message" placeholder="What's on your mind?" required></textarea>
+  </div>
+  <div class="send-row">
+    <button type="submit" id="cf-btn">Send →</button>
+    <span class="status" id="cf-status"></span>
+  </div>
+</form>
+
+<div class="ftr">
+  <div>SUNSET PRESS / N° 03</div>
+  <div class="c">MMXXVI · BANGALORE</div>
+  <div class="r">NO COOKIES · NO TRACKING</div>
+</div>
+
+</div>
+
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <label>Palette</label>
+    <div class="swatches">
+      <div class="sw" data-pal="sunset" style="background:linear-gradient(135deg,#e0663a,#c99a28)" title="Sunset"></div>
+      <div class="sw" data-pal="cool" style="background:linear-gradient(135deg,#c15a55,#3a6558)" title="Cool"></div>
+      <div class="sw" data-pal="wine" style="background:linear-gradient(135deg,#b84028,#5e1420)" title="Wine"></div>
+    </div>
+  </div>
+  <div class="row">
+    <label>Display</label>
+    <select id="disp-sel">
+      <option value="Alfa Slab One">Alfa Slab</option>
+      <option value="Bungee">Bungee</option>
+      <option value="Bungee Shade">Bungee Shade</option>
+      <option value="Fraunces">Fraunces 900</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Body</label>
+    <select id="body-sel">
+      <option value="Fraunces">Fraunces</option>
+      <option value="Familjen Grotesk">Familjen</option>
+    </select>
+  </div>
+  <div class="row">
+    <label>Grain</label>
+    <input type="range" id="grain" min="0" max="1.2" step="0.05">
+  </div>
+</div>
+
+<script>
+const C = window.KJ_CONTENT;
+
+document.getElementById('about-prose').innerHTML = C.about.map(p => `<p>${p}</p>`).join('');
+
+document.getElementById('stats').innerHTML = C.stats.map(s =>
+  `<div class="cell"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`
+).join('');
+
+document.getElementById('work-list').innerHTML = C.experience.map(j => `
+  <article class="job">
+    <div class="meta">
+      Tenure
+      <span class="when">${j.period}</span>
+      <span class="where">${j.location}</span>
+    </div>
+    <div>
+      <h3 class="co">${j.company}</h3>
+      <div class="rl">${j.role}</div>
+      <ul>${j.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+    </div>
+  </article>
+`).join('');
+
+document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
+  <div class="proj ${i===0?'lead':''} ${p.status==='Placeholder'?'empty':''}">
+    <div class="ptop"><span>P/${String(i+1).padStart(2,'0')}</span><span>${p.status} · ${p.year}</span></div>
+    <h3>${p.name === '—' ? 'Coming soon' : p.name}</h3>
+    <div class="pt">${p.tagline}</div>
+    <p class="pd">${p.description}</p>
+    ${p.tags.length ? `<div class="pt-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+  </div>
+`).join('');
+
+document.getElementById('skills-list').innerHTML = Object.entries(C.skills).map(([k,v], i) => `
+  <div class="sk-row">
+    <h4>${k}<small>§ 04.${String.fromCharCode(97+i)}</small></h4>
+    <div class="items">${v.map(s => `<span>${s}</span>`).join('')}</div>
+  </div>
+`).join('');
+
+document.getElementById('edu-list').innerHTML = C.education.map(e => `
+  <div class="edu-row">
+    <div>
+      <h3>${e.school}</h3>
+      <div class="rl">${e.degree} · ${e.period}</div>
+    </div>
+    <div class="gpa">9.0<small>GPA / 10</small></div>
+  </div>
+`).join('');
+
+// ============= Tweaks =============
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "palette": "sunset",
+  "displayFont": "Alfa Slab One",
+  "bodyFont": "Fraunces",
+  "grain": 0.55
+}/*EDITMODE-END*/;
+
+const applyTweaks = (t) => {
+  document.body.classList.remove('cool','wine');
+  if (t.palette === 'cool') document.body.classList.add('cool');
+  if (t.palette === 'wine') document.body.classList.add('wine');
+  document.documentElement.style.setProperty('--disp', `'${t.displayFont}', Georgia, serif`);
+  document.documentElement.style.setProperty('--slab', `'${t.bodyFont}', Georgia, serif`);
+  document.documentElement.style.setProperty('--grain', t.grain);
+};
+applyTweaks(TWEAKS);
+
+window.addEventListener('message', (e) => {
+  if (!e.data || !e.data.type) return;
+  if (e.data.type === '__activate_edit_mode') document.getElementById('tweaks').classList.add('on');
+  if (e.data.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+const persist = (edits) => {
+  Object.assign(TWEAKS, edits);
+  applyTweaks(TWEAKS);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+};
+
+document.querySelectorAll('.sw[data-pal]').forEach(el =>
+  el.addEventListener('click', () => persist({ palette: el.dataset.pal })));
+document.getElementById('disp-sel').value = TWEAKS.displayFont;
+document.getElementById('body-sel').value = TWEAKS.bodyFont;
+document.getElementById('grain').value = TWEAKS.grain;
+document.getElementById('disp-sel').addEventListener('change', e => persist({ displayFont: e.target.value }));
+document.getElementById('body-sel').addEventListener('change', e => persist({ bodyFont: e.target.value }));
+document.getElementById('grain').addEventListener('input', e => persist({ grain: parseFloat(e.target.value) }));
+
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('cf-btn');
+  const status = document.getElementById('cf-status');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  status.className = 'status'; status.textContent = '';
+  try {
+    const res = await fetch('https://formspree.io/f/maqapyav', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(e.target),
+    });
+    if (res.ok) {
+      status.className = 'status ok';
+      status.textContent = 'Dispatch received. I\'ll write back.';
+      e.target.reset();
+    } else { throw new Error(); }
+  } catch {
+    status.className = 'status err';
+    status.textContent = 'Transmission failed. Try email directly.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send →';
+  }
+});
+</script>
+</body>
+</html>

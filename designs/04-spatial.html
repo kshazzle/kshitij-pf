@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KJ / Spatial OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@400;600;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="../content.js"></script>
+<style>
+:root {
+  --wallpaper: linear-gradient(140deg, #1b2742 0%, #2e3660 35%, #6a4071 70%, #c15e52 100%);
+  --window: #f3efe5;
+  --ink: #171512;
+  --muted: #6b6760;
+  --rule: #171512;
+  --accent: #ff5d39;
+  --tb: #171512;
+  --tb-text: #f3efe5;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'IBM Plex Sans', 'Inter', sans-serif;
+  --disp: 'Fraunces', serif;
+}
+body.light-os { --wallpaper: linear-gradient(140deg, #e4dccb, #d2c8a4 60%, #b89b6c); }
+body.dark-os  { --wallpaper: linear-gradient(140deg, #0a0a12, #1c1c2c 60%, #2a1e2c); --window: #1d1b17; --ink: #f3efe5; --muted: #8a867e; --rule: #f3efe5; --tb: #f3efe5; --tb-text: #1d1b17; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; font-family: var(--sans); color: var(--ink); overflow: hidden; }
+body {
+  min-height: 100vh;
+  background: var(--wallpaper);
+  background-attachment: fixed;
+}
+
+/* Menu bar */
+.menubar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 28px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #f3efe5;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+body.light-os .menubar { background: rgba(0,0,0,0.25); }
+.menubar .apple { font-weight: 700; margin-right: 18px; }
+.menubar .app-name { font-weight: 600; margin-right: 16px; }
+.menubar .menu-item { margin-right: 14px; opacity: 0.85; cursor: default; }
+.menubar .menu-item:hover { opacity: 1; }
+.menubar .right { margin-left: auto; display: flex; gap: 14px; opacity: 0.8; }
+.menubar .right a { color: inherit; text-decoration: none; }
+.menubar .right a:hover { color: var(--accent); }
+
+/* Desktop */
+.desktop {
+  position: fixed;
+  top: 28px; bottom: 72px; left: 0; right: 0;
+  overflow: hidden;
+}
+
+/* Desktop icons */
+.desk-icons {
+  position: absolute;
+  top: 20px; right: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.desk-icon {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  user-select: none;
+}
+.desk-icon:hover { background: rgba(255,255,255,0.12); }
+.desk-icon .glyph {
+  width: 40px; height: 40px;
+  background: var(--window);
+  color: var(--ink);
+  border: 1px solid rgba(0,0,0,0.4);
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* Window chrome */
+.window {
+  position: absolute;
+  background: var(--window);
+  color: var(--ink);
+  border: 1px solid #000;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4), 0 20px 40px rgba(0,0,0,0.25);
+  border-radius: 2px;
+  min-width: 280px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.window.focused { box-shadow: 6px 6px 0 rgba(0,0,0,0.55), 0 30px 60px rgba(0,0,0,0.35); z-index: 50; }
+.window .titlebar {
+  background: var(--tb);
+  color: var(--tb-text);
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+}
+.window .titlebar:active { cursor: grabbing; }
+.window .titlebar .lights { display: flex; gap: 6px; }
+.window .titlebar .light {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.5);
+  display: inline-block;
+}
+.window .titlebar .l-close { background: #ff5f56; }
+.window .titlebar .l-min { background: #ffbd2e; }
+.window .titlebar .l-max { background: #27c93f; }
+.window .titlebar .title { text-align: center; }
+.window .titlebar .meta { font-size: 10px; opacity: 0.7; }
+.window .wbody {
+  padding: 18px 22px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.window .wbody::-webkit-scrollbar { width: 8px; }
+.window .wbody::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+
+/* Window-specific positioning (initial) */
+.w-about { top: 40px; left: 30px; width: 360px; height: 440px; }
+.w-work  { top: 90px; left: 420px; width: 520px; height: 520px; }
+.w-proj  { top: 40px; right: 140px; width: 380px; height: 360px; }
+.w-skills { top: 430px; right: 140px; width: 380px; height: 240px; }
+.w-edu { top: 500px; left: 30px; width: 360px; height: 200px; }
+.w-contact { bottom: 40px; left: 420px; width: 520px; height: 380px; }
+.w-hero { top: 150px; left: 30%; width: 520px; height: 260px; display: none; }
+
+@media (max-width: 1200px) {
+  .w-about { width: 320px; height: 380px; }
+  .w-proj, .w-skills { right: 30px; }
+  .w-work { width: 440px; }
+}
+
+/* ABOUT content */
+.about-hero {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  margin: 0 0 12px;
+}
+.about-hero em { color: var(--accent); font-style: italic; font-weight: 400; }
+.about-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+.about-body p { margin: 0 0 12px; font-size: 14px; line-height: 1.55; }
+.avatar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.avatar {
+  width: 52px; height: 52px;
+  background: var(--accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 22px;
+  border: 1px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.avatar-row .who { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; }
+.avatar-row .who b { display: block; font-family: var(--disp); font-weight: 900; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 2px; }
+
+/* status chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.chip .dot { width: 6px; height: 6px; border-radius: 50%; background: #27c93f; }
+
+/* WORK */
+.work-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin: -18px -22px 14px; background: rgba(0,0,0,0.03); }
+body.dark-os .work-tabs { background: rgba(255,255,255,0.04); }
+.work-tabs .tab {
+  padding: 8px 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-right: 1px solid var(--rule);
+}
+.work-tabs .tab.on { color: var(--ink); background: var(--window); font-weight: 600; }
+.work-tabs .tab:hover { color: var(--accent); }
+.job-panel { display: none; }
+.job-panel.on { display: block; }
+.job-panel .j-head {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--muted);
+}
+.job-panel .co {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+.job-panel .rl { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+.job-panel ul { list-style: none; padding: 0; margin: 0; }
+.job-panel li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.5;
+  border-bottom: 1px dashed rgba(0,0,0,0.06);
+}
+body.dark-os .job-panel li { border-color: rgba(255,255,255,0.08); }
+.job-panel li:last-child { border-bottom: 0; }
+.job-panel li::before {
+  content: "▸";
+  position: absolute;
+  left: 2px;
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
+/* PROJ */
+.proj-item {
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+  cursor: default;
+  transition: padding-left .15s;
+}
+body.dark-os .proj-item { border-color: rgba(255,255,255,0.1); }
+.proj-item:hover { padding-left: 6px; }
+.proj-item:last-child { border-bottom: 0; }
+.proj-item .p-top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+.proj-item .p-name { font-family: var(--disp); font-weight: 900; font-size: 24px; line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em; }
+.proj-item.empty .p-name { color: var(--muted); font-weight: 400; font-style: italic; }
+.proj-item .p-tag { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.proj-item .p-desc { font-size: 12px; line-height: 1.5; }
+.proj-item .p-tags { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+.proj-item .p-tags span {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+}
+
+/* SKILLS */
+.skill-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.1);
+  align-items: baseline;
+}
+body.dark-os .skill-row { border-color: rgba(255,255,255,0.1); }
+.skill-row:last-child { border: 0; }
+.skill-row .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.skill-row .v { font-size: 12px; line-height: 1.5; }
+.skill-row .v span + span::before { content: " · "; color: var(--accent); }
+
+/* EDU */
+.edu-card h3 { font-family: var(--disp); font-weight: 900; font-size: 20px; margin: 0; line-height: 1.15; letter-spacing: -0.01em; }
+.edu-card .rl { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.04em; }
+.edu-card .gpa-row { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--muted); }
+.edu-card .gpa-row .gpa { font-family: var(--disp); font-weight: 900; font-size: 44px; color: var(--accent); letter-spacing: -0.03em; line-height: 1; }
+.edu-card .gpa-row .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+/* CONTACT */
+.contact-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.contact-row a {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform .15s, background .15s;
+}
+.contact-row a:hover { background: var(--ink); color: var(--window); transform: translate(-2px,-2px); box-shadow: 3px 3px 0 var(--accent); }
+.contact-row .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.contact-row a:hover .lbl { color: var(--accent); }
+.contact-row .val { font-family: var(--disp); font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+
+/* Dock */
+.dock {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 16px;
+  z-index: 900;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.dock .icon {
+  width: 46px;
+  height: 46px;
+  background: var(--window);
+  border: 1px solid var(--ink);
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .15s;
+  user-select: none;
+  position: relative;
+}
+.dock .icon:hover { transform: translateY(-6px) scale(1.1); }
+.dock .icon .tip {
+  position: absolute;
+  bottom: 54px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+.dock .icon:hover .tip { opacity: 1; }
+.dock .icon.open::after {
+  content: "•";
+  position: absolute;
+  bottom: -12px;
+  font-size: 22px;
+  color: #fff;
+  line-height: 0;
+}
+
+/* contact form inside window */
+.c-form { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--muted); }
+.c-form .field { display: grid; grid-template-columns: 70px 1fr; gap: 8px; align-items: start; margin-bottom: 8px; }
+.c-form .field label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding-top: 6px; }
+.c-form input,
+.c-form textarea {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid var(--rule);
+  background: var(--window);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  outline: none;
+  resize: vertical;
+  transition: border-color .15s;
+}
+.c-form input:focus,
+.c-form textarea:focus { border-color: var(--accent); }
+.c-form textarea { min-height: 64px; }
+.c-form .send-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.c-form button {
+  padding: 5px 14px;
+  border: 1px solid var(--rule);
+  background: var(--ink);
+  color: var(--window);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .15s;
+}
+.c-form button:hover { background: var(--accent); border-color: var(--accent); }
+.c-form button:disabled { opacity: 0.4; cursor: default; }
+.c-form .status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); }
+.c-form .status.ok { color: #27c93f; }
+.c-form .status.err { color: var(--accent); }
+
+/* Tweaks */
+.tweaks {
+  position: fixed; bottom: 86px; right: 16px;
+  width: 260px;
+  background: var(--window);
+  border: 1px solid var(--rule);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  z-index: 2000;
+  display: none;
+  color: var(--ink);
+}
+.tweaks.on { display: block; }
+.tweaks h4 { margin: 0 0 10px; font-family: var(--disp); font-weight: 900; font-size: 16px; }
+.tweaks .row { display: grid; grid-template-columns: 84px 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+.tweaks label { color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; }
+.tweaks select { width: 100%; padding: 4px; border: 1px solid var(--rule); background: var(--window); color: var(--ink); font-family: inherit; font-size: 11px; }
+.tweaks .swatches { display: flex; gap: 4px; }
+.tweaks .sw { width: 22px; height: 22px; border: 1px solid var(--rule); cursor: pointer; }
+.tweaks .toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="menubar">
+  <span class="apple">◉</span>
+  <span class="app-name">KJ OS</span>
+  <span class="menu-item">File</span>
+  <span class="menu-item">View</span>
+  <span class="menu-item">Windows</span>
+  <span class="menu-item">Help</span>
+  <span class="right">
+    <a href="../index.html">← Index</a>
+    <span id="clock">--:--</span>
+  </span>
+</div>
+
+<div class="desktop" id="desktop">
+
+  <div class="desk-icons">
+    <div class="desk-icon" data-focus="w-about"><div class="glyph">K</div>README</div>
+    <div class="desk-icon" data-focus="w-work"><div class="glyph">W</div>work.app</div>
+    <div class="desk-icon" data-focus="w-proj"><div class="glyph">P</div>projects</div>
+    <div class="desk-icon" data-focus="w-contact"><div class="glyph">@</div>contact</div>
+  </div>
+
+  <!-- ABOUT / Hero -->
+  <div class="window w-about" data-win="w-about">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">README · about.md</div>
+      <div class="meta">1 of 6</div>
+    </div>
+    <div class="wbody">
+      <div class="avatar-row">
+        <div class="avatar">KJ</div>
+        <div class="who"><b>Kshitij Jain</b>Software Engineer · Bangalore</div>
+      </div>
+      <h1 class="about-hero">Hi, I<em>build</em> systems.</h1>
+      <div class="about-meta">3.5+ years · GOLANG · JAVA · REACT</div>
+      <div class="about-body" id="about-body"></div>
+      <div class="chip"><span class="dot"></span> Open to chat</div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <div class="window w-work" data-win="w-work">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">work.app</div>
+      <div class="meta">experience</div>
+    </div>
+    <div class="wbody" style="padding:0;">
+      <div class="work-tabs" id="work-tabs"></div>
+      <div id="work-panels" style="padding:18px 22px;"></div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="window w-proj" data-win="w-proj">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">projects/</div>
+      <div class="meta">3 items</div>
+    </div>
+    <div class="wbody" id="proj-list"></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="window w-skills" data-win="w-skills">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">stack.json</div>
+      <div class="meta">7 keys</div>
+    </div>
+    <div class="wbody" id="skills-list"></div>
+  </div>
+
+  <!-- EDU -->
+  <div class="window w-edu" data-win="w-edu">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">education.card</div>
+      <div class="meta">1 entry</div>
+    </div>
+    <div class="wbody" id="edu-card"></div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="window w-contact" data-win="w-contact">
+    <div class="titlebar">
+      <div class="lights"><span class="light l-close"></span><span class="light l-min"></span><span class="light l-max"></span></div>
+      <div class="title">contact.txt</div>
+      <div class="meta">say hi</div>
+    </div>
+    <div class="wbody">
+      <div class="contact-row">
+        <a href="mailto:kshitijjainm@gmail.com"><div class="lbl">Email</div><div class="val">kshitijjainm@gmail.com</div></a>
+        <a href="https://linkedin.com/in/kshitij-jain" target="_blank" rel="noopener"><div class="lbl">LinkedIn</div><div class="val">/in/kshitij-jain</div></a>
+        <a href="https://leetcode.com/u/kshitijjainm" target="_blank" rel="noopener"><div class="lbl">LeetCode</div><div class="val">/u/kshitijjainm</div></a>
+        <a href="../Kshitij_Jain_Resume.pdf" download><div class="lbl">Resume</div><div class="val">Download PDF ↓</div></a>
+        <a href="#"><div class="lbl">Location</div><div class="val">Bangalore, IN</div></a>
+      </div>
+      <form class="c-form" id="contact-form">
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" placeholder="Your name" required />
+        </div>
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+        <div class="field">
+          <label for="cf-msg">Message</label>
+          <textarea id="cf-msg" name="message" placeholder="Type a message…" required></textarea>
+        </div>
+        <div class="send-row">
+          <button type="submit" id="cf-btn">Send</button>
+          <span class="status" id="cf-status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div class="dock">
+  <div class="icon" data-focus="w-about"><span class="tip">README</span>K</div>
+  <div class="icon" data-focus="w-work"><span class="tip">work.app</span>W</div>
+  <div class="icon" data-focus="w-proj"><span class="tip">projects/</span>P</div>
+  <div class="icon" data-focus="w-skills"><span class="tip">stack.json</span>{}</div>
+  <div class="icon" data-focus="w-edu"><span class="tip">education</span>E</div>
+  <div class="icon" data-focus="w-contact"><span class="tip">contact</span>@</div>
+</div>
+
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <label>Wallpaper</label>
+    <div class="swatches">
+      <div class="sw" data-wp="twilight" style="background:linear-gradient(140deg,#1b2742,#6a4071 70%,#c15e52)"></div>
+      <div class="sw" data-wp="paper" style="background:linear-gradient(140deg,#e4dccb,#b89b6c)"></div>
+      <div class="sw" data-wp="mint" style="background:linear-gradient(140deg,#0e3b2e,#2aa37d,#cfe8d9)"></div>
+      <div class="sw" data-wp="dusk" style="background:linear-gradient(140deg,#1a1325,#3a2644,#c26a4a)"></div>
+      <div class="sw" data-wp="noir" style="background:linear-gradient(140deg,#0a0a12,#2a1e2c)"></div>
+    </div>
+  </div>
+  <div class="row">
+    <label>Accent</label>
+    <div class="swatches">
+      <div class="sw" data-c="#ff5d39" style="background:#ff5d39"></div>
+      <div class="sw" data-c="#2a7df5" style="background:#2a7df5"></div>
+      <div class="sw" data-c="#2aa37d" style="background:#2aa37d"></div>
+      <div class="sw" data-c="#e0b540" style="background:#e0b540"></div>
+    </div>
+  </div>
+  <div class="row">
+    <label>Theme</label>
+    <label class="toggle"><input type="checkbox" id="dark-toggle"> Dark</label>
+  </div>
+</div>
+
+<script>
+const C = window.KJ_CONTENT;
+
+// Clock
+const tickClock = () => {
+  const d = new Date();
+  document.getElementById('clock').textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+tickClock(); setInterval(tickClock, 10000);
+
+// Content render
+document.getElementById('about-body').innerHTML = C.about.slice(0,2).map(p => `<p>${p}</p>`).join('');
+
+// Work tabs
+const wtabs = document.getElementById('work-tabs');
+const wpanels = document.getElementById('work-panels');
+wtabs.innerHTML = C.experience.map((j, i) => `<div class="tab ${i===0?'on':''}" data-i="${i}">${j.company}</div>`).join('');
+wpanels.innerHTML = C.experience.map((j, i) => `
+  <div class="job-panel ${i===0?'on':''}" data-i="${i}">
+    <div class="j-head">
+      <div class="co">${j.company}</div>
+      <div class="rl">${j.role} · ${j.period} · ${j.location}</div>
+    </div>
+    <ul>${j.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+  </div>
+`).join('');
+wtabs.addEventListener('click', e => {
+  const t = e.target.closest('.tab');
+  if (!t) return;
+  const i = t.dataset.i;
+  wtabs.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.dataset.i === i));
+  wpanels.querySelectorAll('.job-panel').forEach(x => x.classList.toggle('on', x.dataset.i === i));
+});
+
+// Projects
+document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
+  <div class="proj-item ${p.status==='Placeholder'?'empty':''}">
+    <div class="p-top"><span>P/${String(i+1).padStart(2,'0')}</span><span>${p.status} · ${p.year}</span></div>
+    <div class="p-name">${p.name === '—' ? 'Empty slot' : p.name}</div>
+    <div class="p-tag">${p.tagline}</div>
+    <div class="p-desc">${p.description}</div>
+    ${p.tags.length ? `<div class="p-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+  </div>
+`).join('');
+
+// Skills
+document.getElementById('skills-list').innerHTML = Object.entries(C.skills).map(([k,v]) => `
+  <div class="skill-row">
+    <div class="k">${k}</div>
+    <div class="v">${v.map(s => `<span>${s}</span>`).join('')}</div>
+  </div>
+`).join('');
+
+// Edu
+document.getElementById('edu-card').innerHTML = C.education.map(e => `
+  <div class="edu-card">
+    <h3>${e.school}</h3>
+    <div class="rl">${e.degree} · ${e.period}</div>
+    <div class="gpa-row">
+      <div class="gpa">9.0</div>
+      <div class="lbl">GPA<br>/ 10</div>
+    </div>
+  </div>
+`).join('');
+
+// ============= Window dragging & focus =============
+let zCounter = 10;
+const windows = document.querySelectorAll('.window');
+
+const focusWin = (el) => {
+  document.querySelectorAll('.window.focused').forEach(w => w.classList.remove('focused'));
+  el.classList.add('focused');
+  el.style.zIndex = ++zCounter;
+  // dock indicator
+  document.querySelectorAll('.dock .icon').forEach(i => i.classList.toggle('open', i.dataset.focus === el.dataset.win));
+};
+
+windows.forEach(win => {
+  const tb = win.querySelector('.titlebar');
+  win.addEventListener('mousedown', () => focusWin(win));
+
+  let sx, sy, ox, oy, dragging = false;
+  tb.addEventListener('mousedown', e => {
+    dragging = true;
+    const r = win.getBoundingClientRect();
+    sx = e.clientX; sy = e.clientY;
+    ox = r.left; oy = r.top;
+    // Remove right/bottom anchors and switch to left/top absolute
+    win.style.left = ox + 'px';
+    win.style.top  = oy + 'px';
+    win.style.right = 'auto'; win.style.bottom = 'auto';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    win.style.left = (ox + dx) + 'px';
+    win.style.top  = Math.max(28, oy + dy) + 'px';
+  });
+  document.addEventListener('mouseup', () => dragging = false);
+});
+
+// Focus first window by default
+focusWin(document.querySelector('.w-about'));
+
+// Dock + desktop icons
+document.querySelectorAll('[data-focus]').forEach(el => {
+  el.addEventListener('click', () => {
+    const target = document.querySelector(`[data-win="${el.dataset.focus}"]`);
+    if (target) focusWin(target);
+  });
+});
+
+// ============= Tweaks =============
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "wallpaper": "twilight",
+  "accent": "#ff5d39",
+  "dark": false
+}/*EDITMODE-END*/;
+
+const WALLPAPERS = {
+  twilight: 'linear-gradient(140deg, #1b2742 0%, #2e3660 35%, #6a4071 70%, #c15e52 100%)',
+  paper:    'linear-gradient(140deg, #e4dccb, #d2c8a4 60%, #b89b6c)',
+  mint:     'linear-gradient(140deg, #0e3b2e, #2aa37d 55%, #cfe8d9)',
+  dusk:     'linear-gradient(140deg, #1a1325, #3a2644 50%, #c26a4a)',
+  noir:     'linear-gradient(140deg, #0a0a12, #1c1c2c 60%, #2a1e2c)',
+};
+
+const applyTweaks = (t) => {
+  document.body.classList.toggle('dark-os', !!t.dark);
+  document.body.classList.toggle('light-os', t.wallpaper === 'paper' && !t.dark);
+  document.documentElement.style.setProperty('--accent', t.accent);
+  document.body.style.background = WALLPAPERS[t.wallpaper] || WALLPAPERS.twilight;
+  document.body.style.backgroundAttachment = 'fixed';
+};
+applyTweaks(TWEAKS);
+
+window.addEventListener('message', (e) => {
+  if (!e.data || !e.data.type) return;
+  if (e.data.type === '__activate_edit_mode') document.getElementById('tweaks').classList.add('on');
+  if (e.data.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+const persist = (edits) => {
+  Object.assign(TWEAKS, edits);
+  applyTweaks(TWEAKS);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+};
+
+document.querySelectorAll('.sw[data-wp]').forEach(el =>
+  el.addEventListener('click', () => persist({ wallpaper: el.dataset.wp })));
+document.querySelectorAll('.sw[data-c]').forEach(el =>
+  el.addEventListener('click', () => persist({ accent: el.dataset.c })));
+document.getElementById('dark-toggle').checked = !!TWEAKS.dark;
+document.getElementById('dark-toggle').addEventListener('change', e => persist({ dark: e.target.checked }));
+
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('cf-btn');
+  const status = document.getElementById('cf-status');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  status.className = 'status'; status.textContent = '';
+  try {
+    const res = await fetch('https://formspree.io/f/maqapyav', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(e.target),
+    });
+    if (res.ok) {
+      status.className = 'status ok';
+      status.textContent = 'Sent. I\'ll reply soon.';
+      e.target.reset();
+    } else { throw new Error(); }
+  } catch {
+    status.className = 'status err';
+    status.textContent = 'Error. Try email directly.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send';
+  }
+});
+</script>
+</body>
+</html>
