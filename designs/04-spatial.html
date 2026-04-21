@@ -247,7 +247,7 @@ body.light-os .menubar { background: rgba(0,0,0,0.25); }
 .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: #27c93f; }
 
 /* WORK */
-.work-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin: -18px -22px 14px; background: rgba(0,0,0,0.03); }
+.work-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); background: rgba(0,0,0,0.03); }
 body.dark-os .work-tabs { background: rgba(255,255,255,0.04); }
 .work-tabs .tab {
   padding: 8px 14px;
@@ -710,16 +710,50 @@ let zCounter = 10;
 const windows = document.querySelectorAll('.window');
 
 const focusWin = (el) => {
+  el.style.display = '';
   document.querySelectorAll('.window.focused').forEach(w => w.classList.remove('focused'));
   el.classList.add('focused');
   el.style.zIndex = ++zCounter;
-  // dock indicator
-  document.querySelectorAll('.dock .icon').forEach(i => i.classList.toggle('open', i.dataset.focus === el.dataset.win));
+  updateDockIndicators();
+};
+
+const updateDockIndicators = () => {
+  document.querySelectorAll('.dock .icon').forEach(i => {
+    const w = document.querySelector(`[data-win="${i.dataset.focus}"]`);
+    const open = w && w.style.display !== 'none' && !w.classList.contains('closed');
+    i.classList.toggle('open', !!open);
+  });
+};
+
+const closeWin = (el) => {
+  el.style.display = 'none';
+  el.classList.add('closed');
+  el.classList.remove('focused');
+  updateDockIndicators();
 };
 
 windows.forEach(win => {
   const tb = win.querySelector('.titlebar');
   win.addEventListener('mousedown', () => focusWin(win));
+
+  const closeBtn = win.querySelector('.l-close');
+  if (closeBtn) {
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.addEventListener('mousedown', e => { e.stopPropagation(); });
+    closeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      closeWin(win);
+    });
+  }
+  const minBtn = win.querySelector('.l-min');
+  if (minBtn) {
+    minBtn.style.cursor = 'pointer';
+    minBtn.addEventListener('mousedown', e => { e.stopPropagation(); });
+    minBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      closeWin(win);
+    });
+  }
 
   let sx, sy, ox, oy, dragging = false;
   tb.addEventListener('mousedown', e => {
