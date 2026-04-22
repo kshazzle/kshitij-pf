@@ -60,6 +60,8 @@ body.dark { --bg:#0c0c0c; --ink:#ede9df; --paper:#141414; --rule:#ede9df; --mute
 .topbar .ts { color: var(--muted); margin-right: 24px; }
 .topbar .back { color: var(--ink); text-decoration: none; border: 1px solid var(--rule); padding: 4px 10px; }
 .topbar .back:hover { background: var(--ink); color: var(--bg); }
+.dark-btn { background: none; border: 1px solid var(--rule); color: var(--ink); font-family: var(--mono); font-size: 14px; padding: 3px 9px; cursor: pointer; margin-left: 8px; line-height: 1; }
+.dark-btn:hover { background: var(--ink); color: var(--bg); }
 
 /* section anchor */
 section { position: relative; z-index: 1; padding: 0 24px; }
@@ -435,6 +437,7 @@ footer.ftr {
     <a href="#contact">Contact</a>
   </div>
   <a href="../index.html" class="back">← Index</a>
+  <button class="dark-btn" id="dark-btn" title="Toggle dark mode">◐</button>
 </nav>
 
 <section class="hero">
@@ -692,6 +695,13 @@ document.getElementById('dark-toggle').checked = !!TWEAKS.dark;
 document.getElementById('disp-font').addEventListener('change', e => persist({ displayFont: e.target.value }));
 document.getElementById('mono-font').addEventListener('change', e => persist({ monoFont: e.target.value }));
 document.getElementById('dark-toggle').addEventListener('change', e => persist({ dark: e.target.checked }));
+
+// Persistent dark mode toggle
+const darkBtn = document.getElementById('dark-btn');
+let isDark = localStorage.getItem('kj-dark-brutalist') === '1';
+const applyDark = (d) => { document.body.classList.toggle('dark', d); darkBtn.textContent = d ? '○' : '◐'; document.getElementById('dark-toggle').checked = d; };
+applyDark(isDark);
+darkBtn.addEventListener('click', () => { isDark = !isDark; localStorage.setItem('kj-dark-brutalist', isDark ? '1' : '0'); applyDark(isDark); });
 
 // Contact form
 document.getElementById('contact-form').addEventListener('submit', async (e) => {

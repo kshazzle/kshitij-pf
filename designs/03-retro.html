@@ -28,6 +28,7 @@
 }
 body.cool { --cream:#ead8c4; --paper:#dcc3a0; --orange:#c15a55; --hot:#8c3a47; --mus:#b88830; --sage:#3a6558; --sky:#4a7180; --ink:#201410; --brown:#3a2316; --muted:#6a5a3a; }
 body.wine { --cream:#efd9c0; --paper:#e0b98c; --orange:#b84028; --hot:#5e1420; --mus:#c48a28; --sage:#6a6a28; --sky:#6a4a55; --ink:#2a0e10; --brown:#5a1818; --muted:#7a4a28; }
+body.dark { --cream:#1c1410; --paper:#251a12; --ink:#f0dfc0; --brown:#c4a07a; --orange:#e07040; --hot:#d04828; --mus:#c49028; --muted:#9a7a54; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
@@ -575,6 +576,7 @@ html, body { overflow-x: hidden; }
     <a href="#projects">proj</a>
     <a href="#contact">contact</a>
     <a href="../index.html">← idx</a>
+    <button id="dark-btn" style="background:none;border:1px solid var(--brown);color:var(--brown);font-family:var(--mono);font-size:12px;padding:2px 8px;cursor:pointer;letter-spacing:0.1em;" title="Toggle dark mode">◐</button>
   </div>
 </div>
 
@@ -803,6 +805,12 @@ document.getElementById('grain').value = TWEAKS.grain;
 document.getElementById('disp-sel').addEventListener('change', e => persist({ displayFont: e.target.value }));
 document.getElementById('body-sel').addEventListener('change', e => persist({ bodyFont: e.target.value }));
 document.getElementById('grain').addEventListener('input', e => persist({ grain: parseFloat(e.target.value) }));
+
+const darkBtn = document.getElementById('dark-btn');
+let isDark = localStorage.getItem('kj-dark-retro') === '1';
+const applyDark = (d) => { document.body.classList.toggle('dark', d); darkBtn.textContent = d ? '○' : '◐'; };
+applyDark(isDark);
+darkBtn.addEventListener('click', () => { isDark = !isDark; localStorage.setItem('kj-dark-retro', isDark ? '1' : '0'); applyDark(isDark); });
 
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
   e.preventDefault();
