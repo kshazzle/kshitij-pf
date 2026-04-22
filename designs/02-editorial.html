@@ -108,33 +108,73 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
 .cover .feature {
   position: relative;
   aspect-ratio: 3 / 4;
-  background: linear-gradient(135deg, #d9c98a, #c6a86a 50%, #9a7b48);
+  background: var(--ink);
   border: 1px solid var(--rule);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 28px 24px;
 }
-.cover .feature::after {
-  content: "KJ";
-  position: absolute;
-  bottom: 16px; right: 20px;
+.cover .feature .feat-mono {
   font-family: var(--disp);
   font-style: italic;
   font-weight: 400;
-  font-size: 140px;
-  color: rgba(255,255,255,0.25);
-  line-height: 1;
-}
-.cover .feature .portrait-label {
+  font-size: clamp(100px, 14vw, 180px);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: rgba(255,255,255,0.08);
   position: absolute;
-  bottom: 16px; left: 20px;
+  bottom: -10px; right: -4px;
+  pointer-events: none;
+  user-select: none;
+}
+.cover .feature .feat-top {
   font-family: var(--ui);
   font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding-bottom: 16px;
+}
+.cover .feature .feat-facts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px 0;
+}
+.cover .feature .feat-fact .ff-label {
+  font-family: var(--ui);
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 4px;
+}
+.cover .feature .feat-fact .ff-val {
+  font-family: var(--disp);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: rgba(255,255,255,0.9);
+}
+.cover .feature .feat-fact .ff-val em {
+  font-style: normal;
+  color: var(--accent);
+}
+.cover .feature .feat-bottom {
+  font-family: var(--ui);
+  font-size: 9px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
-}
-.cover .feature .stripes {
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 2px, transparent 2px, transparent 18px);
+  color: rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 16px;
 }
 
 /* feature bullets below cover */
@@ -625,8 +665,31 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
     <p class="dek">A quiet profile of a software engineer who prefers rollback plans to release parties, and migrations that simply — do not — lose data.</p>
   </div>
   <div class="feature">
-    <div class="stripes"></div>
-    <div class="portrait-label">Portrait · placeholder</div>
+    <div class="feat-mono">KJ</div>
+    <div class="feat-top">The Engineer — Profile No. 01</div>
+    <div class="feat-facts">
+      <div class="feat-fact">
+        <div class="ff-label">Currently</div>
+        <div class="ff-val">SWE II at <em>Wayfair</em></div>
+      </div>
+      <div class="feat-fact">
+        <div class="ff-label">Experience</div>
+        <div class="ff-val"><em>3.5+</em> years</div>
+      </div>
+      <div class="feat-fact">
+        <div class="ff-label">Core stack</div>
+        <div class="ff-val">Go · Java · <em>React</em></div>
+      </div>
+      <div class="feat-fact">
+        <div class="ff-label">Based in</div>
+        <div class="ff-val"><em>Bangalore</em>, India</div>
+      </div>
+      <div class="feat-fact">
+        <div class="ff-label">Scale</div>
+        <div class="ff-val"><em>30M+</em> records indexed</div>
+      </div>
+    </div>
+    <div class="feat-bottom">Bangalore · IN · MMXXVI</div>
   </div>
 </section>
 
