@@ -41,7 +41,7 @@ body.dark { --bg:#0c0c0c; --ink:#ede9df; --paper:#141414; --rule:#ede9df; --mute
 .topbar {
   position: sticky; top: 0; z-index: 10;
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 10px 24px;
   border-bottom: 2px solid var(--rule);
@@ -436,8 +436,10 @@ footer.ftr {
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </div>
-  <a href="../index.html" class="back">← Index</a>
-  <button class="dark-btn" id="dark-btn" title="Toggle dark mode">◐</button>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="../index.html" class="back">← Index</a>
+    <button class="dark-btn" id="dark-btn" title="Toggle dark mode">◐</button>
+  </div>
 </nav>
 
 <section class="hero">
