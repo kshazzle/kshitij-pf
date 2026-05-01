@@ -29,6 +29,12 @@
 body.cool { --cream:#ead8c4; --paper:#dcc3a0; --orange:#c15a55; --hot:#8c3a47; --mus:#b88830; --sage:#3a6558; --sky:#4a7180; --ink:#201410; --brown:#3a2316; --muted:#6a5a3a; }
 body.wine { --cream:#efd9c0; --paper:#e0b98c; --orange:#b84028; --hot:#5e1420; --mus:#c48a28; --sage:#6a6a28; --sky:#6a4a55; --ink:#2a0e10; --brown:#5a1818; --muted:#7a4a28; }
 body.dark { --cream:#1c1410; --paper:#251a12; --ink:#f0dfc0; --brown:#c4a07a; --orange:#e07040; --hot:#d04828; --mus:#c49028; --muted:#9a7a54; }
+body.dark::before { mix-blend-mode: screen; opacity: 0.05; }
+body.dark::after { opacity: 0; }
+body.dark .job ul li { border-color: rgba(240,223,192,0.12); }
+body.dark .sk-row { border-color: rgba(240,223,192,0.12); }
+body.dark .proj.lead .pd { color: #e7d5bc; }
+body.dark .c-form .status.ok { color: #7ec89a; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
@@ -224,7 +230,7 @@ body::after {
   gap: 44px;
   padding-bottom: 20px;
 }
-.about .prose { font-family: var(--slab); font-size: 20px; line-height: 1.55; color: #2a1a0e; }
+.about .prose { font-family: var(--slab); font-size: 20px; line-height: 1.55; color: var(--ink); }
 .about .prose p { margin: 0 0 16px; }
 .about .prose p:first-child::first-letter {
   font-family: var(--disp);
@@ -286,7 +292,7 @@ body::after {
   text-shadow: 2px 2px 0 var(--orange);
 }
 .job .rl { font-family: var(--slab); font-style: italic; font-size: 20px; color: var(--brown); margin-bottom: 18px; }
-.job ul { list-style: none; padding: 0; margin: 0; font-family: var(--slab); font-size: 17px; line-height: 1.55; color: #2a1a0e; }
+.job ul { list-style: none; padding: 0; margin: 0; font-family: var(--slab); font-size: 17px; line-height: 1.55; color: var(--ink); }
 .job ul li { padding: 8px 0 8px 28px; position: relative; border-bottom: 1px dashed rgba(42,21,10,0.25); }
 .job ul li:last-child { border-bottom: 0; }
 .job ul li::before {
@@ -335,7 +341,7 @@ body::after {
 }
 .proj.lead h3 { font-size: 56px; }
 .proj .pt { font-family: var(--slab); font-style: italic; font-size: 17px; color: var(--brown); margin-bottom: 12px; }
-.proj .pd { font-family: var(--slab); font-size: 15px; line-height: 1.55; color: #2a1a0e; margin: 0 0 auto; }
+.proj .pd { font-family: var(--slab); font-size: 15px; line-height: 1.55; color: var(--ink); margin: 0 0 auto; }
 .proj .pt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
 .proj .pt-tags span {
   font-family: var(--mono);
@@ -361,7 +367,7 @@ body::after {
 }
 .sk-row h4 { margin: 0; font-family: var(--disp); font-weight: 400; font-size: 26px; color: var(--ink); letter-spacing: -0.01em; }
 .sk-row h4 small { display: block; font-family: var(--mono); font-size: 10px; color: var(--brown); letter-spacing: 0.2em; text-transform: uppercase; font-weight: normal; margin-top: 4px; }
-.sk-row .items { font-family: var(--slab); font-size: 18px; line-height: 1.45; color: #2a1a0e; }
+.sk-row .items { font-family: var(--slab); font-size: 18px; line-height: 1.45; color: var(--ink); }
 .sk-row .items span + span::before { content: " · "; color: var(--hot); font-weight: 700; }
 
 /* Edu */
