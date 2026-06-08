@@ -910,12 +910,14 @@ document.getElementById('edu-list').innerHTML = C.education.map(e => `
 `).join('');
 
 // ============= Tweaks =============
+const DARK_KEY = 'kj-dark-editorial';
 const TWEAKS = /*EDITMODE-BEGIN*/{
   "accent": "#b03a1f",
   "displayFont": "Playfair Display",
   "bodyFont": "Cormorant Garamond",
   "dark": false
 }/*EDITMODE-END*/;
+TWEAKS.dark = localStorage.getItem(DARK_KEY) === '1';
 
 const applyTweaks = (t) => {
   document.documentElement.style.setProperty('--accent', t.accent);
@@ -946,13 +948,18 @@ document.getElementById('body-font').value = TWEAKS.bodyFont;
 document.getElementById('dark-toggle').checked = !!TWEAKS.dark;
 document.getElementById('disp-font').addEventListener('change', e => persist({ displayFont: e.target.value }));
 document.getElementById('body-font').addEventListener('change', e => persist({ bodyFont: e.target.value }));
-document.getElementById('dark-toggle').addEventListener('change', e => persist({ dark: e.target.checked }));
-
 const darkBtn = document.getElementById('dark-btn');
-let isDark = localStorage.getItem('kj-dark-editorial') === '1';
-const applyDark = (d) => { document.body.classList.toggle('dark', d); darkBtn.textContent = d ? '○' : '◐'; document.getElementById('dark-toggle').checked = d; };
-applyDark(isDark);
-darkBtn.addEventListener('click', () => { isDark = !isDark; localStorage.setItem('kj-dark-editorial', isDark ? '1' : '0'); applyDark(isDark); });
+let isDark = TWEAKS.dark;
+const applyDark = (d) => {
+  isDark = d;
+  TWEAKS.dark = d;
+  localStorage.setItem(DARK_KEY, d ? '1' : '0');
+  document.body.classList.toggle('dark', d);
+  darkBtn.textContent = d ? '○' : '◐';
+  document.getElementById('dark-toggle').checked = d;
+};
+document.getElementById('dark-toggle').addEventListener('change', e => applyDark(e.target.checked));
+darkBtn.addEventListener('click', () => applyDark(!isDark));
 
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
   e.preventDefault();
