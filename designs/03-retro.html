@@ -33,7 +33,6 @@ body.dark::before { mix-blend-mode: screen; opacity: 0.05; }
 body.dark::after { opacity: 0; }
 body.dark .job ul li { border-color: rgba(240,223,192,0.12); }
 body.dark .sk-row { border-color: rgba(240,223,192,0.12); }
-body.dark .proj.lead .pd { color: #e7d5bc; }
 body.dark .c-form .status.ok { color: #7ec89a; }
 
 * { box-sizing: border-box; }
@@ -303,7 +302,7 @@ body::after {
 }
 
 /* Projects */
-.proj-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 20px; padding-bottom: 40px; }
+.proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding-bottom: 40px; }
 .proj {
   border: 2px solid var(--ink);
   background: var(--paper);
@@ -315,12 +314,6 @@ body::after {
   transition: transform .2s ease, box-shadow .2s ease;
 }
 .proj:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--hot); }
-.proj.lead { background: var(--ink); color: var(--cream); box-shadow: 5px 5px 0 var(--hot); }
-.proj.lead .ptop { color: var(--mus); border-color: var(--mus); }
-.proj.lead h3 { color: var(--cream); text-shadow: 3px 3px 0 var(--orange); }
-.proj.lead .pt { color: var(--mus); }
-.proj.lead .pd { color: #e7d5bc; }
-.proj.lead .pt-tags span { border-color: var(--mus); color: var(--mus); }
 .proj .ptop {
   display: flex; justify-content: space-between;
   font-family: var(--mono);
@@ -339,11 +332,9 @@ body::after {
   margin: 14px 0 10px;
   color: var(--ink);
 }
-.proj.lead h3 { font-size: 56px; }
 .proj .pt { font-family: var(--slab); font-style: italic; font-size: 17px; color: var(--brown); margin-bottom: 12px; }
 .proj .pd { font-family: var(--slab); font-size: 15px; line-height: 1.55; color: var(--ink); margin: 0 0 auto; }
 .proj .pt-shot { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 2px solid var(--ink); border-radius: 4px; margin: 14px 0; }
-.proj.lead .pt-shot { border-color: var(--mus); }
 .proj .pt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
 .proj .pt-tags span {
   font-family: var(--mono);
@@ -547,7 +538,6 @@ html, body { overflow-x: hidden; }
   .job .meta { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
   .job .meta .when { font-size: 18px; }
   .proj-grid { grid-template-columns: 1fr; gap: 16px; }
-  .proj.lead h3 { font-size: 42px; }
   .sk-row { grid-template-columns: 140px 1fr; gap: 16px; }
   .contact { grid-template-columns: 1fr; gap: 28px; }
   .contact h2 { font-size: clamp(60px, 12vw, 110px); }
@@ -750,7 +740,7 @@ document.getElementById('work-list').innerHTML = C.experience.map(j => `
 `).join('');
 
 document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
-  <div class="proj ${i===0?'lead':''} ${p.status==='Placeholder'?'empty':''}">
+  <div class="proj ${p.status==='Placeholder'?'empty':''}">
     <div class="ptop"><span>P/${String(i+1).padStart(2,'0')}</span><span>${p.status} · ${p.year}</span></div>
     ${p.image ? `<img class="pt-shot" src="${p.image}" alt="${p.name} screenshot" loading="lazy">` : ''}
     <h3>${p.name === '—' ? 'Coming soon' : p.name}</h3>
