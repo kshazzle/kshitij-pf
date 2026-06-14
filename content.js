@@ -98,10 +98,10 @@ window.KJ_CONTENT = {
       image: "../assets/shots/whatif-worldcup.png",
     },
     {
-      name: "Career Agent",
-      tagline: "Tailor your resume to any job in seconds.",
+      name: "OfferForge",
+      tagline: "Land your dream offer — tailor your resume in seconds.",
       description:
-        "An AI résumé optimizer that reads a job description and your existing résumé, then rewrites and scores it for relevance — surfacing missing keywords and stronger phrasing. FastAPI backend with a Vite + React frontend.",
+        "An AI résumé optimizer: paste your résumé and a job description, and it rewrites them to beat the ATS and match the role — surfacing missing keywords and stronger phrasing. FastAPI backend with a Vite + React frontend.",
       tags: ["FastAPI", "React", "AI"],
       status: "Live",
       year: "2026",
