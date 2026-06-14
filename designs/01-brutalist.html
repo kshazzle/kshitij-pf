@@ -212,6 +212,9 @@ section { position: relative; z-index: 1; padding: 0 24px; }
 body.dark .pj .pj-desc { color: #ccc; }
 .pj .pj-tags { display: flex; gap: 6px; margin-top: 16px; }
 .pj .pj-tags span { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--rule); padding: 3px 6px; }
+.pj .pj-link { display: inline-block; margin-top: 14px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+.pj .pj-link:hover { color: var(--accent); }
+body.dark .pj .pj-link { color: #eee; }
 
 /* skills */
 .skills { padding-bottom: 60px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 0; border: 1.5px solid var(--rule); }
@@ -636,6 +639,7 @@ document.getElementById('projects-grid').innerHTML = C.projects.map((p, i) => `
     <div class="pj-tag">${p.tagline}</div>
     <p class="pj-desc">${p.description}</p>
     ${p.tags.length ? `<div class="pj-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+    ${p.url ? `<a class="pj-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}
   </div>
 `).join('');
 

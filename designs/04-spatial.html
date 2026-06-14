@@ -320,6 +320,8 @@ body.dark-os .proj-item { border-color: rgba(255,255,255,0.1); }
   border: 1px solid var(--muted);
   color: var(--muted);
 }
+.proj-item .p-link { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--accent); text-decoration: none; }
+.proj-item .p-link:hover { text-decoration: underline; }
 
 /* SKILLS */
 .skill-row {
@@ -683,6 +685,7 @@ document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
     <div class="p-tag">${p.tagline}</div>
     <div class="p-desc">${p.description}</div>
     ${p.tags.length ? `<div class="p-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+    ${p.url ? `<a class="p-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}
   </div>
 `).join('');
 

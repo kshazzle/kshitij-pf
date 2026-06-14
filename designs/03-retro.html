@@ -352,6 +352,8 @@ body::after {
   border: 1px solid var(--brown);
   color: var(--brown);
 }
+.proj .pt-link { display: inline-block; margin-top: 14px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--hot); text-decoration: none; border-bottom: 2px solid var(--hot); padding-bottom: 2px; }
+.proj .pt-link:hover { opacity: 0.7; }
 .proj.empty { background: transparent; box-shadow: none; border-style: dashed; }
 .proj.empty h3 { color: var(--brown); }
 
@@ -752,6 +754,7 @@ document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
     <div class="pt">${p.tagline}</div>
     <p class="pd">${p.description}</p>
     ${p.tags.length ? `<div class="pt-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+    ${p.url ? `<a class="pt-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}
   </div>
 `).join('');
 

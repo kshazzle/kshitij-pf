@@ -408,6 +408,8 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
   padding: 4px 8px;
   border: 1px solid var(--muted);
 }
+.proj .proj-link { display: inline-block; margin-top: 16px; font-family: var(--ui); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+.proj .proj-link:hover { opacity: 0.7; }
 .proj.empty { color: var(--muted); }
 .proj.empty h3 { color: var(--muted); }
 
@@ -747,28 +749,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
   </div>
   <div class="page">Page 03</div>
 </div>
-<div class="proj-grid">
-  <div class="proj lead">
-    <div class="num">Feature — 001</div>
-    <h3>NBHD <em>—</em> every neighborhood, scored.</h3>
-    <div class="tag">A Bangalore neighborhood quality product that turns mixed public and reference data into simple 0–100 scores.</div>
-    <div class="hero-img"><div class="stripes"></div></div>
-    <p>Compare walkability, safety, price, and amenities side-by-side. One number per axis — no dashboards, no charts buried in filters. Homebuyers get a glance-first interface; the data underneath is the hard part.</p>
-    <div class="tags"><span>Data</span><span>Product</span><span>India</span><span>In Progress</span></div>
-  </div>
-  <div class="proj empty">
-    <div class="num">Feature — 002</div>
-    <h3>To be <em>announced.</em></h3>
-    <div class="tag">Placeholder. More work incoming.</div>
-    <p>Reserved for future features. Come back soon — or ask what I'm working on.</p>
-  </div>
-  <div class="proj empty">
-    <div class="num">Feature — 003</div>
-    <h3>To be <em>announced.</em></h3>
-    <div class="tag">Placeholder. More work incoming.</div>
-    <p>Reserved for future features. Come back soon — or ask what I'm working on.</p>
-  </div>
-</div>
+<div class="proj-grid" id="proj-grid"></div>
 
 <!-- SKILLS -->
 <div class="sec-hd" id="skills">
@@ -890,6 +871,18 @@ document.getElementById('work-list').innerHTML = C.experience.map(j => `
       ${j.bullets.map(b => `<div class="b">${b}</div>`).join('')}
     </div>
   </article>
+`).join('');
+
+document.getElementById('proj-grid').innerHTML = C.projects.map((p, i) => `
+  <div class="proj ${i === 0 ? 'lead' : ''}">
+    <div class="num">Feature — ${String(i+1).padStart(3,'0')}</div>
+    <h3>${p.name}</h3>
+    <div class="tag">${p.tagline}</div>
+    ${i === 0 ? `<div class="hero-img"><div class="stripes"></div></div>` : ''}
+    <p>${p.description}</p>
+    <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join('')}<span>${p.status}</span></div>
+    ${p.url ? `<a class="proj-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}
+  </div>
 `).join('');
 
 document.getElementById('skills-list').innerHTML = Object.entries(C.skills).map(([k,v]) => `
