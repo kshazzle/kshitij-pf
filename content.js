@@ -94,6 +94,16 @@ window.KJ_CONTENT = {
       year: "2026",
       url: "https://whatif-worldcup.vercel.app",
     },
+    {
+      name: "Career Agent",
+      tagline: "Tailor your resume to any job in seconds.",
+      description:
+        "An AI résumé optimizer that reads a job description and your existing résumé, then rewrites and scores it for relevance — surfacing missing keywords and stronger phrasing. FastAPI backend with a Vite + React frontend.",
+      tags: ["FastAPI", "React", "AI"],
+      status: "Live",
+      year: "2026",
+      url: "https://career-agent-eight.vercel.app",
+    },
   ],
   stats: [
     { n: "3.5+", l: "Years shipping" },
