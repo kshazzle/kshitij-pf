@@ -342,6 +342,8 @@ body::after {
 .proj.lead h3 { font-size: 56px; }
 .proj .pt { font-family: var(--slab); font-style: italic; font-size: 17px; color: var(--brown); margin-bottom: 12px; }
 .proj .pd { font-family: var(--slab); font-size: 15px; line-height: 1.55; color: var(--ink); margin: 0 0 auto; }
+.proj .pt-shot { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 2px solid var(--ink); border-radius: 4px; margin: 14px 0; }
+.proj.lead .pt-shot { border-color: var(--mus); }
 .proj .pt-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
 .proj .pt-tags span {
   font-family: var(--mono);
@@ -750,6 +752,7 @@ document.getElementById('work-list').innerHTML = C.experience.map(j => `
 document.getElementById('proj-list').innerHTML = C.projects.map((p, i) => `
   <div class="proj ${i===0?'lead':''} ${p.status==='Placeholder'?'empty':''}">
     <div class="ptop"><span>P/${String(i+1).padStart(2,'0')}</span><span>${p.status} · ${p.year}</span></div>
+    ${p.image ? `<img class="pt-shot" src="${p.image}" alt="${p.name} screenshot" loading="lazy">` : ''}
     <h3>${p.name === '—' ? 'Coming soon' : p.name}</h3>
     <div class="pt">${p.tagline}</div>
     <p class="pd">${p.description}</p>

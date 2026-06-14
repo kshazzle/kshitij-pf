@@ -73,6 +73,7 @@ window.KJ_CONTENT = {
       status: "Live",
       year: "2026",
       url: "https://canopy-kshitijjainms-projects.vercel.app",
+      image: "../assets/shots/canopy.png",
     },
     {
       name: "Transfer Deal or No Deal",
@@ -83,6 +84,7 @@ window.KJ_CONTENT = {
       status: "Live",
       year: "2026",
       url: "https://deal-no-deal.vercel.app",
+      image: "../assets/shots/deal-no-deal.png",
     },
     {
       name: "What If? World Cup",
@@ -93,6 +95,7 @@ window.KJ_CONTENT = {
       status: "Live",
       year: "2026",
       url: "https://whatif-worldcup.vercel.app",
+      image: "../assets/shots/whatif-worldcup.png",
     },
     {
       name: "Career Agent",
@@ -103,6 +106,7 @@ window.KJ_CONTENT = {
       status: "Live",
       year: "2026",
       url: "https://career-agent-eight.vercel.app",
+      image: "../assets/shots/career-agent.png",
     },
   ],
   stats: [

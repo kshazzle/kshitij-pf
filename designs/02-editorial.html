@@ -379,6 +379,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
   color: var(--ink);
   margin: 0 0 16px;
 }
+.proj .proj-shot { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border: 1px solid var(--rule); margin: 4px 0 16px; }
 .proj .tags { display: flex; gap: 10px; flex-wrap: wrap; }
 .proj .tags span {
   font-family: var(--ui);
@@ -859,6 +860,7 @@ document.getElementById('proj-grid').innerHTML = C.projects.map((p, i) => `
     <div class="num">Feature — ${String(i+1).padStart(3,'0')}</div>
     <h3>${p.name}</h3>
     <div class="tag">${p.tagline}</div>
+    ${p.image ? `<img class="proj-shot" src="${p.image}" alt="${p.name} screenshot" loading="lazy">` : ''}
     <p>${p.description}</p>
     <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join('')}<span>${p.status}</span></div>
     ${p.url ? `<a class="proj-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}

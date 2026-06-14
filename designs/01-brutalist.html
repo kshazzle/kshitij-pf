@@ -206,6 +206,7 @@ section { position: relative; z-index: 1; padding: 0 24px; }
 .pj:hover { transform: translate(-3px,-3px); box-shadow: 6px 6px 0 var(--rule); }
 .pj.placeholder { background: transparent; border-style: dashed; color: var(--muted); }
 .pj .pj-top { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.pj .pj-shot { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; margin: 16px 0 0; border: 2px solid var(--rule); }
 .pj .pj-name { font-family: var(--disp); font-weight: 800; font-size: 56px; letter-spacing: -0.03em; line-height: 1; margin: 16px 0 8px; text-transform: uppercase; }
 .pj .pj-tag { font-size: 14px; line-height: 1.4; margin-bottom: 12px; }
 .pj .pj-desc { font-size: 12px; line-height: 1.55; color: #333; margin: 0 0 auto; }
@@ -635,6 +636,7 @@ document.getElementById('work-list').innerHTML = C.experience.map(j => `
 document.getElementById('projects-grid').innerHTML = C.projects.map((p, i) => `
   <div class="pj ${p.status === 'Placeholder' ? 'placeholder' : ''}">
     <div class="pj-top"><span>P/${String(i+1).padStart(2,'0')}</span><span>${p.status} · ${p.year}</span></div>
+    ${p.image ? `<img class="pj-shot" src="${p.image}" alt="${p.name} screenshot" loading="lazy">` : ''}
     <div class="pj-name">${p.name}</div>
     <div class="pj-tag">${p.tagline}</div>
     <p class="pj-desc">${p.description}</p>
