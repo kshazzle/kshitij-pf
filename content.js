@@ -65,15 +65,6 @@ window.KJ_CONTENT = {
   ],
   projects: [
     {
-      name: "NBHD",
-      tagline: "Compare Bangalore neighborhoods at a glance.",
-      description:
-        'Nbhd ("neighborhood") turns mixed public and reference data into simple 0–100 scores so homebuyers can compare areas side-by-side. Walkability, safety, price, amenities — all rolled into one number per axis.',
-      tags: ["Data", "Product", "India"],
-      status: "In progress",
-      year: "2026",
-    },
-    {
       name: "Canopy",
       tagline: "Carbon footprint awareness, one small action at a time.",
       description:

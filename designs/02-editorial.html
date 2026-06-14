@@ -338,7 +338,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
 /* projects */
 .proj-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 40px;
   padding: 56px 0;
 }
@@ -379,25 +379,6 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); fo
   color: var(--ink);
   margin: 0 0 16px;
 }
-.proj.lead { grid-column: 1 / 2; grid-row: 1 / 3; }
-.proj.lead h3 { font-size: 88px; }
-.proj.lead .hero-img {
-  margin: 20px 0 20px;
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(135deg, #c9a873, #8a6a3c);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-}
-.proj.lead .hero-img::after {
-  content: "NBHD — 0 TO 100";
-  position: absolute; bottom: 14px; left: 16px;
-  font-family: var(--ui);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: rgba(255,255,255,0.9);
-}
-.proj.lead .hero-img .stripes { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 28px); }
 .proj .tags { display: flex; gap: 10px; flex-wrap: wrap; }
 .proj .tags span {
   font-family: var(--ui);
@@ -874,11 +855,10 @@ document.getElementById('work-list').innerHTML = C.experience.map(j => `
 `).join('');
 
 document.getElementById('proj-grid').innerHTML = C.projects.map((p, i) => `
-  <div class="proj ${i === 0 ? 'lead' : ''}">
+  <div class="proj">
     <div class="num">Feature — ${String(i+1).padStart(3,'0')}</div>
     <h3>${p.name}</h3>
     <div class="tag">${p.tagline}</div>
-    ${i === 0 ? `<div class="hero-img"><div class="stripes"></div></div>` : ''}
     <p>${p.description}</p>
     <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join('')}<span>${p.status}</span></div>
     ${p.url ? `<a class="proj-link" href="${p.url}" target="_blank" rel="noopener">View live ↗</a>` : ''}
